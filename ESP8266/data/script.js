@@ -39,7 +39,7 @@ function submit1() {
   if (angle >= -90 && angle <= 90) {
     websocket.send(direction + "&" + angle + "&" + chosen_motor);
   } else {
-    console.log("Invalid angle value. Please enter a value between -90 and 90.");
+    console.log("Invalid angle value. Please enter a value between -360 and 360.");
   }
 }
 
