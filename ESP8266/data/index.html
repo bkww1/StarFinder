@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Star Finder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://kit.fontawesome.com/6383420594.js" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+</head>
+<body>
+  <div class="topnav">
+    <h1>Star Finder <i class="fa-solid fa-user-astronaut" style="color: #ffffff;"></i></h1>
+  </div>
+  <div class="precise_steering">
+		<button id="b1" onclick="goUP()">UP</button>
+		<button id="b2" onclick="goLeft()">LEFT</button>
+		<button id="b3" onclick="goRight()">RIGHT</button>
+		<button id="b4" onclick="goDown()">DOWN</button>
+
+	</div>
+	<div class="save_positon">
+		<button id="b5" onclick="savePosition()">SAVE POSITION</button>
+	<div class="input_form">
+		<form>
+          <input type="radio" id="H" name="direction" value="H" checked>
+          <label for="H">Horizontal</label>
+          <input type="radio" id="V" name="direction" value="V">
+          <label for="V">Vertical</label><br><br><br>
+          <label for="angle">Input rotation angle</label>
+          <input type="number" id="angle" name="angle">
+        </form>
+		<button onclick="submit1()">MOVE</button>
+		</div>
+		
+		<div class="radio_selection">
+  <label for="option1">
+    <input type="radio" id="option1" name="selection" value="MOON"> MOON
+  </label>
+  <br>
+  <label for="option2">
+    <input type="radio" id="option2" name="selection" value="SUN"> SUN
+  </label>
+  <br>
+  <label for="option3">
+    <input type="radio" id="option3" name="selection" value="START"> STARTING POSITION
+  </label>
+  <button id="b6" onclick="submit2()">MOVE</button>
+</div>
+</body>
+
+</html>
