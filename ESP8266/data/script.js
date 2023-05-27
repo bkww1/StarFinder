@@ -30,13 +30,18 @@ function savePosition(){
 websocket.send("SAVE");
 }
 function submit1() {
-    var direction = document.querySelector('input[name="direction"]:checked').value;
-    var angle = document.getElementById("angle").value;
-	var chosen_motor = 0;
-	websocket.send(direction + "&" + angle + "&" + chosen_motor);
-    
+  var direction = document.querySelector('input[name="direction"]:checked').value;
+  var angleInput = document.getElementById("angle");
+  var angle = parseInt(angleInput.value);
+  var chosen_motor = 0;
 
+  // Check if the angle is within the valid range
+  if (angle >= -90 && angle <= 90) {
+    websocket.send(direction + "&" + angle + "&" + chosen_motor);
+  } else {
+    console.log("Invalid angle value. Please enter a value between -90 and 90.");
   }
+}
 
 function submit2(){
 	var selectedOption = document.querySelector('input[name="selection"]:checked').value;
