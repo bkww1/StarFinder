@@ -2,12 +2,18 @@
 
 var gateway = `ws://${window.location.hostname}/ws`;
 var websocket;
+
 window.addEventListener('load', onload);
 
 function onload(event) {
     initWebSocket();
 }
-
+function onMessage(event) {
+  console.log('Received message:', event.data);
+}
+function onOpen(event) {
+  console.log('WebSocket connection established.');
+}
 function initWebSocket() {
     console.log('Trying to open a WebSocket connection…');
     websocket = new WebSocket(gateway);
@@ -16,15 +22,13 @@ function initWebSocket() {
     websocket.onmessage = onMessage;
 }
 
-function onOpen(event) {
-    console.log('Connection opened');
-}
 
 function onClose(event) {
     console.log('Connection closed');
     document.getElementById("motor-state").innerHTML = "motor stopped"
     setTimeout(initWebSocket, 2000);
 }
+
 
 function savePosition(){
 websocket.send("SAVE");

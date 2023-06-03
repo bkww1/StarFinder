@@ -11,10 +11,12 @@ String sendCommand;
 String sendInfo;
 bool processed = true;
 String message = "";
-String objects[3] = {"MOON", "SUN", "START"};
+String objects[4] = {"Sirius", "Betelgeza", "Vega", "Polaris"};
+
+
 // Replace with your network credentials
-const char* ssid = "CGA2121";
-const char* password = "Joanna123";
+const char* ssid = "*****";
+const char* password = "******";
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
@@ -52,39 +54,39 @@ void notifyClients(String state) {
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
   if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
-    bool isFound = false;
     data[len] = 0;
     message = (char*)data;
-    Serial.println(message);
     int firstAmpersand = message.indexOf('&');
     int secondAmpersand = message.lastIndexOf('&');
+    Serial.println(message);
   // Extract the substrings
     direction = message.substring(0, firstAmpersand);
     angle = message.substring(firstAmpersand + 1, secondAmpersand);
     chosen_motor = message.substring(secondAmpersand + 1);
 
-    
-    for (int i = 0; i < 3; i++) {
+    bool isFound = false;
+    for (int i = 0; i < 4; i++) {
     if (objects[i] == message) {
       isFound = true;
+      
       break;
       }
     }
     if (isFound){
-      Serial.println(message);
+      sendCommand = "FIND";
+      direction = 0;
+      angle = 0;
+      sendInfo = direction + "&" + angle + "&" + message;
+      processed = false;
     }
     else if (message == "SAVE"){
-      Serial.println(message);
+      sendCommand = "SAVE";
+      direction = 0;
+      angle = 0;
+      sendInfo = direction + "&" + angle + "&" + "SAVE";
+      processed = false;
     }
     else{
-      Serial.println("Direction");
-      Serial.println(direction);
-      Serial.println("angle");
-      Serial.println(angle);
-      Serial.println("Motor");
-      Serial.println(chosen_motor);
-      notifyClients(direction);
-      notifyStop = true;
       if (chosen_motor == "0"){
         sendCommand = "GO_ANGLE";
         sendInfo = direction + "&" + angle;
@@ -176,6 +178,18 @@ void loop() {
       Serial.println(sendInfo);
       Wire.beginTransmission(8);
       Wire.write(sendInfo.c_str());
+      Wire.endTransmission();
+    }
+
+    else if(sendCommand == "SAVE"){
+      Wire.beginTransmission(8);
+      Wire.write("SAVE");
+      Wire.endTransmission();
+    }
+      else if (sendCommand== "FIND") {
+      Serial.println(message);
+      Wire.beginTransmission(8);
+      Wire.write(message.c_str());
       Wire.endTransmission();
     }
     processed = true;
